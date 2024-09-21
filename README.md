@@ -26,7 +26,7 @@ that currently `forklift` is only tested for Linux computers.
 You can clone the latest commit of this Forklift pallet to your computer, by
 using the `forklift` tool:
 ```
-forklift plt clone github.com/ethanjli/pallet-example-transitive@main
+forklift plt clone github.com/forklift-run/pallet-example-transitive@main
 ```
 
 Then you can apply the cloned pallet on your computer using the following sequence of `forklift`
@@ -43,7 +43,7 @@ If your user is in the `docker` group (so that you don't need to use `sudo` when
 commands), then you can just run a single command instead of the two commands listed above:
 
 ```
-forklift plt switch github.com/ethanjli/pallet-example-transitive@main
+forklift plt switch github.com/forklift-run/pallet-example-transitive@main
 ```
 
 This pallet will bring up a web server at port 80.
