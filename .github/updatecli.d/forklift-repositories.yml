@@ -1,7 +1,7 @@
-name: 'req-plt {{ .path }}@{{ index . "version-query" }}'
+name: 'req-repo {{ .path }}@{{ index . "version-query" }}'
 
 scms:
-  pallet:
+  repo:
     kind: github
     spec:
       owner: '{{ requiredEnv "REPO_OWNER" }}'
@@ -15,23 +15,23 @@ scms:
 
 actions:
   pull-request:
-    scmid: pallet
+    scmid: repo
     kind: github/pullrequest
     spec:
-      title: "build(forklift): bump required Forklift pallets"
+      title: "build(forklift): bump required Forklift repos"
       labels:
         - dependencies
       mergemethod: squash
 
 sources:
   current:
-    name: Current version of required pallet
+    name: Current version of required repo
     kind: shell
     spec:
       environments:
         - name: PATH # needed to find the forklift binary
         - name: HOME # needed for Forklift to determine its default workspace path
-      command: forklift dev pallet show-pallet-version {{ .path }}
+      command: forklift dev plt show-repo-version {{ .path }}
   resolved:
     name: Resolved version query
     kind: shell
@@ -54,11 +54,11 @@ conditions:
       command: test "{{ source "current" }}" != "{{ source "resolved" }}"
 
 targets:
-  pallet:
+  repo:
     name: 'bump {{ .path }} from {{ source "current" }} to {{ source "resolved" }}'
     kind: shell
     disablesourceinput: true
-    scmid: pallet
+    scmid: repo
     dependson:
       - source#current
       - source#resolved
@@ -67,4 +67,4 @@ targets:
       environments:
         - name: PATH # needed to find the forklift binary
         - name: HOME # needed for Forklift to determine its default workspace path
-      command: '{{ requiredEnv "CWD" }}/.github/forklift-require.sh pallet {{ .path }} {{ index . "version-query" }}'
+      command: '{{ requiredEnv "CWD" }}/.github/forklift-require.sh repo {{ .path }} {{ index . "version-query" }}'
